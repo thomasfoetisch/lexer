@@ -2,7 +2,7 @@
 #include <fstream>
 #include <string>
 
-#include "../lexer.hpp"
+#include "../src/lexer.hpp"
 
 enum class symbol {
   int_number, fp_number, identifier, lit_string,

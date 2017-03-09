@@ -1,7 +1,7 @@
 
 #include <fstream>
 #include <string>
-#include "../regex/lexer.hpp"
+#include "../src/regex/lexer.hpp"
 
 
 enum class dummy_alphabet {

@@ -1,5 +1,5 @@
 
-#include "../token.hpp"
+#include "../src/token.hpp"
 #include <iostream>
 
 

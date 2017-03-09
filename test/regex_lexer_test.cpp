@@ -1,7 +1,7 @@
 
 #include <iostream>
 #include <string>
-#include "../regex/lexer.hpp"
+#include "../src/regex/lexer.hpp"
 
 
 int main(int argc, char** argv) {

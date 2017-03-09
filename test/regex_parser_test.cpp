@@ -1,6 +1,6 @@
 
-#include "../regex/lexer.hpp"
-#include "../regex/parser.hpp"
+#include "../src/regex/lexer.hpp"
+#include "../src/regex/parser.hpp"
 
 int main(int argc, char** argv) {
   typedef regex::lexer::token_type token_type;

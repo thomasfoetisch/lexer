@@ -1,4 +1,4 @@
-#include "regex_ast.hpp"
+#include "../src/regex/ast/ast.hpp"
 
 int main(int argc, char *argv[]) {
   using regex::ast::node;
