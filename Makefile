@@ -46,20 +46,23 @@ HEADERS = include/lexer.hpp \
 
 
 $(HEADERS): include/%: src/%
-	install -m 0644 -D $< $@
+	@echo [INSTALL] $(<:src/%=%)
+	@install -m 0644 -D $< $@
 
 all: $(BIN_TEST) $(HEADERS)
 
 $(OBJECTS): build/%.o: %.cpp
-	$(CXX) $(CXXFLAGS) -c -o $@ $<
+	@echo [CXX] $<
+	@$(CXX) $(CXXFLAGS) -c -o $@ $<
 
 $(BIN_TEST): bin/%: build/test/%.o
-	$(CXX) $(LDFLAGS) -o $@ $<
+	@echo [LD] $@
+	@$(CXX) $(LDFLAGS) -o $@ $<
 
 clean:
-	rm -f $(OBJECTS)
-	rm -f $(BIN) $(BIN_TEST)
-	rm -rf include/*
+	@rm -f $(OBJECTS)
+	@rm -f $(BIN) $(BIN_TEST)
+	@rm -rf include/*
 
 install: bin/...
 	cp bin/... $(BIN_DIR)
