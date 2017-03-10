@@ -22,24 +22,24 @@ OBJECTS = build/test/file_source_test.o \
           build/test/token_buffer_test.o \
           build/test/token_test.o
 
-HEADERS = include/lexer.hpp \
-	  include/token_buffer.hpp \
-	  include/token.hpp \
-	  include/regex/alphabet.hpp \
-	  include/regex/build_dfa.hpp \
-	  include/regex/dfa.hpp \
-	  include/regex/lexer.hpp \
-	  include/regex/match.hpp \
-	  include/regex/parser.hpp \
-	  include/regex/ast/alt.hpp \
-	  include/regex/ast/ast.hpp \
-	  include/regex/ast/cat.hpp \
-	  include/regex/ast/char_class.hpp \
-	  include/regex/ast/end_marker.hpp \
-	  include/regex/ast/epsilon.hpp \
-	  include/regex/ast/kleen.hpp \
-	  include/regex/ast/marker.hpp \
-	  include/regex/ast/node.hpp
+HEADERS = include/lexer/lexer.hpp \
+	  include/lexer/token_buffer.hpp \
+	  include/lexer/token.hpp \
+	  include/lexer/regex/alphabet.hpp \
+	  include/lexer/regex/build_dfa.hpp \
+	  include/lexer/regex/dfa.hpp \
+	  include/lexer/regex/lexer.hpp \
+	  include/lexer/regex/match.hpp \
+	  include/lexer/regex/parser.hpp \
+	  include/lexer/regex/ast/alt.hpp \
+	  include/lexer/regex/ast/ast.hpp \
+	  include/lexer/regex/ast/cat.hpp \
+	  include/lexer/regex/ast/char_class.hpp \
+	  include/lexer/regex/ast/end_marker.hpp \
+	  include/lexer/regex/ast/epsilon.hpp \
+	  include/lexer/regex/ast/kleen.hpp \
+	  include/lexer/regex/ast/marker.hpp \
+	  include/lexer/regex/ast/node.hpp
 
 
 .PHONY = all clean install
@@ -53,6 +53,7 @@ all: $(BIN_TEST) $(HEADERS)
 
 $(OBJECTS): build/%.o: %.cpp
 	@echo [CXX] $<
+	@mkdir --parents $(dir $@)
 	@$(CXX) $(CXXFLAGS) -c -o $@ $<
 
 $(BIN_TEST): bin/%: build/test/%.o
