@@ -45,7 +45,7 @@ HEADERS = include/lexer/lexer.hpp \
 .PHONY = all clean install
 
 
-$(HEADERS): include/%: src/%
+$(HEADERS): include/lexer/%: src/%
 	@echo [INSTALL] $(<:src/%=%)
 	@install -m 0644 -D $< $@
 
