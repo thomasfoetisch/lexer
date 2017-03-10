@@ -45,11 +45,11 @@ HEADERS = include/lexer/lexer.hpp \
 .PHONY = all clean install
 
 
+all: $(BIN_TEST) $(HEADERS)
+
 $(HEADERS): include/lexer/%: src/%
 	@echo [INSTALL] $(<:src/%=%)
 	@install -m 0644 -D $< $@
-
-all: $(BIN_TEST) $(HEADERS)
 
 $(OBJECTS): build/%.o: %.cpp
 	@echo [CXX] $<
