@@ -8,31 +8,31 @@ DEPS = $(patsubst %.cpp,build/%.deps,$(SOURCES))
 
 .PHONY = all deps clean install
 
-all: $(BIN) $(HEADERS) $(LIB)
+all: $(BIN) $(LIB)
 
-include $(DEPS)
+-include $(DEPS)
 
 $(HEADERS): include/lexer/%: src/%
-	@echo [INSTALL] $(<:src/%=%)
+	@echo "[INST]" $(<:src/%=%)
 	@install -m 0644 -D $< $@
 
 $(OBJECTS): build/%.o: %.cpp
-	@echo [CXX] $< "depends on " $^
+	@echo "[CXX] " $@
 	@mkdir --parents $(dir $@)
 	@$(CXX) $(CXXFLAGS) -c -o $@ $<
 
 $(DEPS): build/%.deps: %.cpp
-	@echo [DEPS] $< "depends on " $^
+	@echo "[DEPS]" $@
 	@mkdir --parents $(dir $@)
 	@$(DEPS_BIN) -std=c++11 -MM -MT build/$*.o $< > $@
 	@$(DEPS_BIN) -std=c++11 -MM -MT build/$*.deps $< >> $@
 
 $(BIN): bin/%:
-	@echo [LD] $@
+	@echo "[LD]  " $@
 	@$(CXX) $(LDFLAGS) -o $@ $^
 
 $(LIB): lib/%:
-	@echo [AR] $@
+	@echo "[AR]  " $@
 	@$(AR) $(ARFLAGS) $@ $^
 
 deps: $(DEPS)
@@ -40,7 +40,7 @@ deps: $(DEPS)
 clean:
 	@rm -f $(OBJECTS)
 	@rm -f $(DEPS)
-	@rm -f $(BIN) $(BIN_TEST)
+	@rm -f $(BIN)
 	@rm -rf build/*
 	@rm -rf include/*
 	@rm -f $(LIB)
@@ -48,4 +48,4 @@ clean:
 install: $(BIN) $(HEADERS) $(LIB)
 	cp $(BIN) $(PREFIX)/$(BIN_DIR)/
 	cp -r include/* $(PREFIX)/$(INCLUDE_DIR)/
-	cp $(LIB) $(PREFIX)/$(LID_DIR)/
+	cp $(LIB) $(PREFIX)/$(LIB_DIR)/
