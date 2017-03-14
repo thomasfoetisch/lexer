@@ -1,4 +1,6 @@
 
+.SUFFIX:
+
 include config.mk
 
 OBJECTS = $(patsubst %.cpp,build/%.o,$(SOURCES))
@@ -6,7 +8,7 @@ DEPS = $(patsubst %.cpp,build/%.deps,$(SOURCES))
 
 .PHONY = all deps clean install
 
-all: $(BIN) $(HEADERS)
+all: $(BIN) $(HEADERS) $(LIB)
 
 include $(DEPS)
 
@@ -29,6 +31,10 @@ $(BIN): bin/%:
 	@echo [LD] $@
 	@$(CXX) $(LDFLAGS) -o $@ $^
 
+$(LIB): lib/%:
+	@echo [AR] $@
+	@$(AR) $(ARFLAGS) $@ $^
+
 deps: $(DEPS)
 
 clean:
@@ -37,6 +43,9 @@ clean:
 	@rm -f $(BIN) $(BIN_TEST)
 	@rm -rf build/*
 	@rm -rf include/*
+	@rm -f $(LIB)
 
-install: bin/...
-	cp bin/... $(BIN_DIR)
+install: $(BIN) $(HEADERS) $(LIB)
+	cp $(BIN) $(PREFIX)/$(BIN_DIR)/
+	cp -r include/* $(PREFIX)/$(INCLUDE_DIR)/
+	cp $(LIB) $(PREFIX)/$(LID_DIR)/

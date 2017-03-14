@@ -2,8 +2,14 @@ CXX = g++
 DEPS_BIN = g++
 CXXFLAGS = -g -std=c++11
 LDFLAGS = -g
+AR = ar
+ARFLAGS = rc
 
-BIN_DIR = ~/.local/bin/
+PREFIX = ~/.local/
+BIN_DIR = bin/
+INCLUDE_DIR = include/
+LIB_DIR = lib/
+
 
 SOURCES = test/file_source_test.cpp \
           test/lexer_test.cpp \
@@ -12,7 +18,10 @@ SOURCES = test/file_source_test.cpp \
           test/string_source_test.cpp \
           test/test_regex_ast.cpp \
           test/token_buffer_test.cpp \
-          test/token_test.cpp
+          test/token_test.cpp \
+          src/regex/alphabet.cpp \
+          src/regex/build_dfa.cpp \
+          src/regex/match.cpp
 
 HEADERS = include/lexer/lexer.hpp \
 	  include/lexer/token_buffer.hpp \
@@ -41,10 +50,15 @@ BIN = bin/file_source_test \
       bin/token_buffer_test \
       bin/token_test
 
-bin/file_source_test: build/test/file_source_test.o
-bin/lexer_test: build/test/lexer_test.o
-bin/regex_lexer_test: build/test/regex_lexer_test.o
-bin/regex_parser_test: build/test/regex_parser_test.o
-bin/string_source_test: build/test/string_source_test.o
-bin/token_buffer_test: build/test/token_buffer_test.o
-bin/token_test: build/test/token_test.o
+
+bin/file_source_test: build/test/file_source_test.o build/src/regex/alphabet.o
+bin/lexer_test: build/test/lexer_test.o build/src/regex/alphabet.o build/src/regex/build_dfa.o
+bin/regex_lexer_test: build/test/regex_lexer_test.o build/src/regex/alphabet.o
+bin/regex_parser_test: build/test/regex_parser_test.o build/src/regex/alphabet.o
+bin/string_source_test: build/test/string_source_test.o build/src/regex/alphabet.o
+bin/token_buffer_test: build/test/token_buffer_test.o build/src/regex/alphabet.o
+bin/token_test: build/test/token_test.o build/src/regex/alphabet.o
+
+LIB = lib/liblexer.a
+
+lib/liblexer.a: build/src/regex/alphabet.o build/src/regex/build_dfa.o build/src/regex/match.o
