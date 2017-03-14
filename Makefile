@@ -8,7 +8,7 @@ DEPS = $(patsubst %.cpp,build/%.deps,$(SOURCES))
 
 .PHONY = all deps clean install
 
-all: $(BIN) $(LIB)
+all: $(BIN) $(LIB) $(HEADERS)
 
 -include $(DEPS)
 
@@ -49,3 +49,6 @@ install: $(BIN) $(HEADERS) $(LIB)
 	cp $(BIN) $(PREFIX)/$(BIN_DIR)/
 	cp -r include/* $(PREFIX)/$(INCLUDE_DIR)/
 	cp $(LIB) $(PREFIX)/$(LIB_DIR)/
+
+print-%:
+	@echo $*=$($*)
