@@ -1,68 +1,41 @@
-CXX = g++
-CXXFLAGS = -g -std=c++11
-LDFLAGS = -g
 
-BIN_DIR = ~/.local/bin/
+include config.mk
 
-BIN_TEST = bin/file_source_test \
-           bin/lexer_test \
-           bin/regex_lexer_test \
-           bin/regex_parser_test \
-           bin/string_source_test \
-           bin/token_buffer_test \
-           bin/token_test
+OBJECTS = $(patsubst %.cpp,build/%.o,$(SOURCES))
+DEPS = $(patsubst %.cpp,build/%.deps,$(SOURCES))
 
-OBJECTS = build/test/file_source_test.o \
-          build/test/lexer_test.o \
-          build/test/regex_lexer_test.o \
-          build/test/regex_parser_test.o \
-          build/test/string_source_test.o \
-          build/test/test_regex_ast.o \
-          build/test/test_regex.o \
-          build/test/token_buffer_test.o \
-          build/test/token_test.o
+.PHONY = all deps clean install
 
-HEADERS = include/lexer/lexer.hpp \
-	  include/lexer/token_buffer.hpp \
-	  include/lexer/token.hpp \
-	  include/lexer/regex/alphabet.hpp \
-	  include/lexer/regex/build_dfa.hpp \
-	  include/lexer/regex/dfa.hpp \
-	  include/lexer/regex/lexer.hpp \
-	  include/lexer/regex/match.hpp \
-	  include/lexer/regex/parser.hpp \
-	  include/lexer/regex/ast/alt.hpp \
-	  include/lexer/regex/ast/ast.hpp \
-	  include/lexer/regex/ast/cat.hpp \
-	  include/lexer/regex/ast/char_class.hpp \
-	  include/lexer/regex/ast/end_marker.hpp \
-	  include/lexer/regex/ast/epsilon.hpp \
-	  include/lexer/regex/ast/kleen.hpp \
-	  include/lexer/regex/ast/marker.hpp \
-	  include/lexer/regex/ast/node.hpp
+all: $(BIN) $(HEADERS)
 
-
-.PHONY = all clean install
-
-
-all: $(BIN_TEST) $(HEADERS)
+include $(DEPS)
 
 $(HEADERS): include/lexer/%: src/%
 	@echo [INSTALL] $(<:src/%=%)
 	@install -m 0644 -D $< $@
 
 $(OBJECTS): build/%.o: %.cpp
-	@echo [CXX] $<
+	@echo [CXX] $< "depends on " $^
 	@mkdir --parents $(dir $@)
 	@$(CXX) $(CXXFLAGS) -c -o $@ $<
 
-$(BIN_TEST): bin/%: build/test/%.o
+$(DEPS): build/%.deps: %.cpp
+	@echo [DEPS] $< "depends on " $^
+	@mkdir --parents $(dir $@)
+	@$(DEPS_BIN) -std=c++11 -MM -MT build/$*.o $< > $@
+	@$(DEPS_BIN) -std=c++11 -MM -MT build/$*.deps $< >> $@
+
+$(BIN): bin/%:
 	@echo [LD] $@
-	@$(CXX) $(LDFLAGS) -o $@ $<
+	@$(CXX) $(LDFLAGS) -o $@ $^
+
+deps: $(DEPS)
 
 clean:
 	@rm -f $(OBJECTS)
+	@rm -f $(DEPS)
 	@rm -f $(BIN) $(BIN_TEST)
+	@rm -rf build/*
 	@rm -rf include/*
 
 install: bin/...
