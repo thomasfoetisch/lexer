@@ -4,6 +4,9 @@ CXXFLAGS = -g -std=c++11
 LDFLAGS = -g
 AR = ar
 ARFLAGS = rc
+MKDIR = mkdir
+MKDIRFLAGS = -p
+
 
 PREFIX = ~/.local/
 BIN_DIR = bin/
