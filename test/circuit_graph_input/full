@@ -1,0 +1,5 @@
+// Voltage source:
+Voltage ( 1 Milli Volt )    from ground to e_1;
+
+// Load of the circuit:
+Resistor ( 1.103 Kilo Ohm ) from e_1    to ground;
