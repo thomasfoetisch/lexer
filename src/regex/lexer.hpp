@@ -213,10 +213,10 @@ class file_source: public source<token_type_t> {
 
   std::string file_name;
 
-  int start_line, start_column;
-  int current_line, current_column;
+  std::size_t start_line, start_column;
+  std::size_t current_line, current_column;
 
-  int chunk_size;
+  std::size_t chunk_size;
   
  private:
   void increment_coordinates() {

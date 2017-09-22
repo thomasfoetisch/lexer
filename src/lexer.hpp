@@ -51,7 +51,7 @@ class regex_lexer {
   void skip() {
     bool abort(false);
     std::size_t current_state(skipper_automaton.start_state);
-    char symbol(src.back()->peek());
+    
     while (not src.back()->eof() and not abort) {
       char symbol(src.back()->peek());
       std::size_t next_state(skipper_automaton.transitions[current_state][symbol]);
