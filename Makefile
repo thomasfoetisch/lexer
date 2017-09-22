@@ -6,7 +6,7 @@ include config.mk
 OBJECTS = $(patsubst %.cpp,build/%.o,$(SOURCES))
 DEPS = $(patsubst %.cpp,build/%.deps,$(SOURCES))
 
-.PHONY = all deps clean install
+.PHONY = all deps clean install install-all install-bin install-dev
 .DEFAULT_GOAL = all
 
 all: $(BIN) $(LIB) $(HEADERS)
@@ -47,10 +47,16 @@ clean:
 	@rm -rf include/*
 	@rm -f $(LIB)
 
-install: $(BIN) $(HEADERS) $(LIB)
-	cp $(BIN) $(PREFIX)/$(BIN_DIR)/
+install: install-dev
+
+install-all: install-bin install-dev
+
+install-dev: $(HEADERS) $(LIB)
 	cp -r include/* $(PREFIX)/$(INCLUDE_DIR)/
 	cp $(LIB) $(PREFIX)/$(LIB_DIR)/
+
+install-bin: $(BIN)
+	cp $(BIN) $(PREFIX)/$(BIN_DIR)/
 
 print-%:
 	@echo $*=$($*)
