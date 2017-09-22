@@ -103,7 +103,7 @@ struct file_token: public token<symbol_type> {
   file_token(symbol_type s, const std::string& v,
              const std::string& f, int line_num, int col_num)
       : token<symbol_type>(s, v),
-        filename(f), line_number(line_num), column_number(col_num) {}
+        filename(f), column_number(col_num), line_number(line_num) {}
   virtual ~file_token() {}
 
   using token<symbol_type>::symbol;
