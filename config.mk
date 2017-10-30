@@ -1,7 +1,7 @@
-CXX = g++
+CXX = clang++
 DEPS_BIN = g++
-CXXFLAGS = -g -std=c++11
-LDFLAGS = -g
+CXXFLAGS = -O2 -std=c++11
+LDFLAGS = -O2
 AR = ar
 ARFLAGS = rc
 MKDIR = mkdir
@@ -13,6 +13,7 @@ BIN_DIR = bin/
 INCLUDE_DIR = include/
 LIB_DIR = lib/
 
+PKG_NAME = lexer
 
 SOURCES = test/file_source_test.cpp \
           test/lexer_test.cpp \
