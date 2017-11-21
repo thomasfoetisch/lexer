@@ -22,6 +22,7 @@ SOURCES = test/file_source_test.cpp \
           test/string_source_test.cpp \
           test/test_regex_ast.cpp \
           test/token_buffer_test.cpp \
+          test/minimal_lexer.cpp \
           test/token_test.cpp \
           src/regex/alphabet.cpp \
           src/regex/build_dfa.cpp \
@@ -54,6 +55,7 @@ BIN = bin/file_source_test \
       bin/string_source_test \
       bin/token_buffer_test \
       bin/token_test \
+      bin/minimal_lexer \
       bin/circuit_graph
 
 
@@ -65,6 +67,7 @@ bin/string_source_test: build/test/string_source_test.o build/src/regex/alphabet
 bin/token_buffer_test: build/test/token_buffer_test.o build/src/regex/alphabet.o
 bin/token_test: build/test/token_test.o build/src/regex/alphabet.o
 bin/circuit_graph: build/test/circuit_graph.o build/src/regex/alphabet.o build/src/regex/build_dfa.o
+bin/minimal_lexer: build/test/minimal_lexer.o build/src/regex/alphabet.o build/src/regex/build_dfa.o
 
 LIB = lib/liblexer.a
 
