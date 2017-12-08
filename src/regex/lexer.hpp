@@ -129,11 +129,21 @@ class file_source: public source<token_type_t> {
   using typename source<token_type_t>::token_type;
   typedef typename token_type::symbol_type symbol_type;
 
-  file_source(std::istream* stream, const std::string f)
+  file_source(std::istream* stream, const std::string& f)
       : file(stream),
         p1(buffer.begin()), p2(buffer.begin()),
         file_name(f),
-        start_line(0), start_column(0),
+        start_line(1), start_column(0),
+        current_line(0), current_column(0),
+        chunk_size(1) {
+    fill();
+  }
+
+  file_source()
+      : file(nullptr),
+        p1(buffer.begin()), p2(buffer.begin()),
+        file_name(""),
+        start_line(1), start_column(0),
         current_line(0), current_column(0),
         chunk_size(1) {
     fill();
@@ -142,8 +152,25 @@ class file_source: public source<token_type_t> {
   
   virtual ~file_source() {}
 
+  void set_file(std::istream* stream, const std::string& f) {
+    buffer.clear();
+    p1 = buffer.begin();
+    p2 = buffer.begin();
+
+    file_name = f;
+    file = stream;
+
+    start_line = 1;
+    start_column = 0;
+
+    current_line = 1;
+    current_column = 0;
+
+    fill();
+  }
+
   virtual bool eof() {
-    return file->eof() and p2 == buffer.end();
+    return (not file) or (file->eof() and p2 == buffer.end());
   }
   
   virtual char get() {
@@ -229,16 +256,18 @@ class file_source: public source<token_type_t> {
   }
   
   void fill() {
-    const std::size_t p2_distance(std::distance(p1, p2));
-    buffer.erase(buffer.begin(), p1);
-    buffer.resize(buffer.size() + chunk_size);
-    p1 = buffer.begin();
-    p2 = p1 + p2_distance;
+    if (file) {
+      const std::size_t p2_distance(std::distance(p1, p2));
+      buffer.erase(buffer.begin(), p1);
+      buffer.resize(buffer.size() + chunk_size);
+      p1 = buffer.begin();
+      p2 = p1 + p2_distance;
     
-    file->read(&(*p2), chunk_size);
-    std::size_t actual_chunk_size(file->gcount());
-    if (actual_chunk_size < chunk_size)
-      buffer.resize(buffer.size() - chunk_size + actual_chunk_size);
+      file->read(&(*p2), chunk_size);
+      std::size_t actual_chunk_size(file->gcount());
+      if (actual_chunk_size < chunk_size)
+	buffer.resize(buffer.size() - chunk_size + actual_chunk_size);
+    }
   }
 };
 
