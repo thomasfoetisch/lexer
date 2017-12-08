@@ -93,8 +93,8 @@ struct string_token: public token<symbol_type> {
   }
 
  private:
-  int column_number;
   int line_number;
+  int column_number;
 };
 
 

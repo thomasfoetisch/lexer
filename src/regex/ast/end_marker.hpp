@@ -30,7 +30,7 @@ class end_marker: public node {
     node::last_pos.insert(position);
   }
 
-  virtual void populate(dfa_context& c) {}
+  virtual void populate(dfa_context& /* c */) {}
 
   virtual node* copy() {
     return new end_marker(*this);
