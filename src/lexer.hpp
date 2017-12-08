@@ -54,6 +54,11 @@ class regex_lexer {
     
     while (not src.back()->eof() and not abort) {
       char symbol(src.back()->peek());
+      if (symbol < 0)
+	throw std::string("regex_lexer::get(): "
+			  "non ascii character near "
+			  + src.back()->render_current_coordinates());
+      
       std::size_t next_state(skipper_automaton.transitions[current_state][symbol]);
       if (next_state) {
         src.back()->get();
