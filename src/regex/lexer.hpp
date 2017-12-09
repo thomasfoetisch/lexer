@@ -21,6 +21,8 @@ class source {
   virtual char peek() = 0;
   virtual void discard() = 0;
   virtual void discard(std::size_t length) = 0;
+  virtual std::string extract() = 0;
+  virtual std::string extract(std::size_t length) = 0;
   virtual token_type* build_token(symbol_type s) = 0;
   virtual token_type* build_token(symbol_type s, const std::string& v) = 0;
   virtual token_type* build_token(symbol_type s, std::size_t length) = 0;
@@ -77,10 +79,26 @@ class string_source: public source<token_type_t> {
       increment_coordinates();
       ++p2;
     }
-    
+
     discard();
   }
-  
+
+  virtual std::string extract() {
+    const std::string result(p1, p2);
+
+    discard();
+
+    return result;
+  }
+
+  virtual std::string extract(std::size_t length) {
+    const std::string result(p1, p1 + length);
+
+    discard(length);
+
+    return result;
+  }
+
   virtual token_type* build_token(symbol_type s) {
     return build_token(s, std::string(p1, p2));
   }
@@ -101,10 +119,10 @@ class string_source: public source<token_type_t> {
     token_type* result(new string_token<symbol_type>(s, v,
                                                      start_line, start_column));
     discard();
-    
+
     return result;
   }
-  
+
  private:
   std::string buffer;
   std::string::iterator p1, p2;
@@ -180,18 +198,18 @@ class file_source: public source<token_type_t> {
       fill();
     return c;
   }
-  
+
   virtual char peek() {
     return *p2;
   }
-  
+
   virtual void discard() {
     p1 = p2;
 
     start_line = current_line;
     start_column = current_column;
   }
-  
+
   virtual void discard(std::size_t length) {
     p2 = p1;
 
@@ -205,11 +223,27 @@ class file_source: public source<token_type_t> {
 
     discard();
   }
-  
+
+  virtual std::string extract() {
+    const std::string result(p1, p2);
+
+    discard();
+
+    return result;
+  }
+
+  virtual std::string extract(std::size_t length) {
+    const std::string result(p1, p1 + length);
+
+    discard(length);
+
+    return result;
+  }
+
   virtual token_type* build_token(symbol_type s) {
     return build_token(s, std::string(p1, p2));
   }
-      
+
   virtual token_type* build_token(symbol_type s, std::size_t length) {
     token_type* tmp(new file_token<symbol_type>(s, std::string(p1, p1 + length),
                                                 file_name, start_line, start_column));
@@ -312,7 +346,15 @@ class file_stack_source: public source<token_type_t> {
   virtual void discard(std::size_t length) {
     files.back()->discard(length);
   }
-  
+
+  virtual std::string extract() {
+    return files.back()->extract();
+  }
+
+  virtual std::string extract(std::size_t length) {
+    return files.back()->extract(length);
+  }
+
   virtual token_type* build_token(symbol_type s) {
     return files.back()->build_token(s);
   }

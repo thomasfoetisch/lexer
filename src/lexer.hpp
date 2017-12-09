@@ -68,7 +68,11 @@ class regex_lexer {
       }
     }
 
-    src.back()->discard();
+    skipped_characters = src.back()->extract();
+  }
+
+  const std::string& get_skipped_characters() const {
+    return skipped_characters;
   }
   
   token_type* get() {
@@ -127,6 +131,7 @@ class regex_lexer {
   regex::dfa skipper_automaton, lexer_automaton;
   symbol_type end_of_input_symbol;
   std::map<std::size_t, symbol_type> s_map;
+  std::string skipped_characters;
 };
 
 

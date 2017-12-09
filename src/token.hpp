@@ -46,9 +46,14 @@ struct repl_token: public token<symbol_type> {
   virtual std::string render_coordinates() const {
     std::ostringstream oss;
     oss << "[" << "REPL#" << history_index
-        << ", " << line_number + 1 << ":"
-        << column_number << "-" << column_number + value.size() - 1
-        << "]";
+        << ", " << line_number << ":"
+        << column_number;
+
+    if (value.size() > 1)
+      oss << "-" << column_number + value.size() - 1 << "]";
+    else
+      oss << "]";
+
     return oss.str();
   }
 
@@ -76,9 +81,14 @@ struct string_token: public token<symbol_type> {
 
   virtual std::string render_coordinates() const {
     std::ostringstream oss;
-    oss << "[" << line_number + 1 << ":"
-        << column_number << "-" << column_number + value.size() - 1
-        << "]";
+    oss << "[" << line_number << ":"
+        << column_number;
+
+    if (value.size() > 1)
+      oss << "-" << column_number + value.size() - 1 << "]";
+    else
+      oss << "]";
+
     return oss.str();
   }
 
@@ -112,9 +122,14 @@ struct file_token: public token<symbol_type> {
   virtual std::string render_coordinates() const {
     std::ostringstream oss;
     oss << "[" << filename << ":"
-        << line_number + 1 << ":"
-        << column_number << "-"
-        << column_number + value.size() - 1 << "]";
+        << line_number << ":"
+        << column_number;
+
+    if (value.size() > 1)
+      oss << "-" << column_number + value.size() - 1 << "]";
+    else
+      oss << "]";
+
     return oss.str();
   }
 
