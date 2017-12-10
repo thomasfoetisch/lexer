@@ -55,7 +55,7 @@ class parser {
         break;
         
       default:
-        throw std::string("unexpected token: " + current->render_full());
+        throw std::string("unexpected token: " + current->render());
         break;
     }
 

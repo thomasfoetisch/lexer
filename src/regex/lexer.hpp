@@ -112,7 +112,7 @@ class string_source: public source<token_type_t> {
   }
 
   virtual std::string render_current_coordinates() {
-    return string_token<symbol_type>::render_coordinate_point(start_line, start_column);
+    return source_coordinate_range(start_line, start_column, 0).render();
   }
 
   virtual token_type* build_token(symbol_type s, const std::string& v) {
@@ -262,9 +262,7 @@ class file_source: public source<token_type_t> {
   }
 
   virtual std::string render_current_coordinates() {
-    return file_token<symbol_type>::render_coordinate_point(file_name,
-                                                            start_line,
-                                                            start_column);
+    return file_source_coordinate_range(file_name, start_line, start_column, 0).render();
   }
   
  private:

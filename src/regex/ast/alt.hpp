@@ -17,7 +17,7 @@ class alt: public node {
   using node::token_type;
 
   alt(node* l_leg, node* r_leg, token_type* t)
-      : left_leg(l_leg), right_leg(r_leg), coordinates(t->render_full()) {}
+      : left_leg(l_leg), right_leg(r_leg), coordinates(t->render()) {}
 
   alt(node* l_leg, node* r_leg)
       : left_leg(l_leg), right_leg(r_leg), coordinates() {}

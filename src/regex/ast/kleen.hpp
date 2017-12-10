@@ -14,7 +14,7 @@ class kleen: public node {
  public:
   using node::token_type;
   
-  kleen(node* l, token_type* t): leg(l), coordinates(t->render_full()) {}
+  kleen(node* l, token_type* t): leg(l), coordinates(t->render()) {}
 
   kleen(const kleen& op)
       : leg(op.leg->copy()), coordinates(op.coordinates) {}

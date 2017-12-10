@@ -16,7 +16,7 @@ class char_class: public node {
   using node::token_type;
   
   explicit char_class(const std::string& c, token_type* t)
-      : representation(256, false), coordinates(t->render_full()) {
+      : representation(256, false), coordinates(t->render()) {
     if (not c.size())
       throw std::string("char_class(string, token_type): "
                         "empty class not allowed.");
