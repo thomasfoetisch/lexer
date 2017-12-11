@@ -15,18 +15,18 @@ LIB_DIR = lib/
 
 PKG_NAME = lexer
 
-SOURCES = test/file_source_test.cpp \
-          test/lexer_test.cpp \
-          test/regex_lexer_test.cpp \
-          test/regex_parser_test.cpp \
-          test/string_source_test.cpp \
-          test/test_regex_ast.cpp \
-          test/token_buffer_test.cpp \
-          test/minimal_lexer.cpp \
-          test/token_test.cpp \
+SOURCES = test/file_source.cpp \
+          test/lexer.cpp \
+          test/regex_lexer.cpp \
+          test/regex_parser.cpp \
+          test/string_source.cpp \
+          test/regex_ast.cpp \
+          test/token_buffer.cpp \
+          test/token.cpp \
           src/regex/symbols.cpp \
           src/regex/build_dfa.cpp \
           src/regex/match.cpp \
+	  src/minimal_lexer.cpp \
 	  test/circuit_graph.cpp
 
 HEADERS = include/lexer/lexer.hpp \
@@ -52,26 +52,26 @@ HEADERS = include/lexer/lexer.hpp \
 	  include/lexer/regex/ast/marker.hpp \
 	  include/lexer/regex/ast/node.hpp
 
-BIN = bin/file_source_test \
-      bin/lexer_test \
-      bin/regex_lexer_test \
-      bin/regex_parser_test \
-      bin/string_source_test \
-      bin/token_buffer_test \
-      bin/token_test \
+BIN = bin/test_file_source \
+      bin/test_lexer \
+      bin/test_regex_lexer \
+      bin/test_regex_parser \
+      bin/test_string_source \
+      bin/test_token_buffer \
+      bin/test_token \
       bin/minimal_lexer \
       bin/circuit_graph
 
 
-bin/file_source_test: build/test/file_source_test.o build/src/regex/symbols.o
-bin/lexer_test: build/test/lexer_test.o build/src/regex/symbols.o build/src/regex/build_dfa.o
-bin/regex_lexer_test: build/test/regex_lexer_test.o build/src/regex/symbols.o
-bin/regex_parser_test: build/test/regex_parser_test.o build/src/regex/symbols.o
-bin/string_source_test: build/test/string_source_test.o build/src/regex/symbols.o
-bin/token_buffer_test: build/test/token_buffer_test.o build/src/regex/symbols.o
-bin/token_test: build/test/token_test.o build/src/regex/symbols.o
+bin/test_file_source: build/test/file_source.o build/src/regex/symbols.o
+bin/test_lexer: build/test/lexer.o build/src/regex/symbols.o build/src/regex/build_dfa.o
+bin/test_regex_lexer: build/test/regex_lexer.o build/src/regex/symbols.o
+bin/test_regex_parser: build/test/regex_parser.o build/src/regex/symbols.o
+bin/test_string_source: build/test/string_source.o build/src/regex/symbols.o
+bin/test_token_buffer: build/test/token_buffer.o build/src/regex/symbols.o
+bin/test_token: build/test/token.o build/src/regex/symbols.o
 bin/circuit_graph: build/test/circuit_graph.o build/src/regex/symbols.o build/src/regex/build_dfa.o
-bin/minimal_lexer: build/test/minimal_lexer.o build/src/regex/symbols.o build/src/regex/build_dfa.o
+bin/minimal_lexer: build/src/minimal_lexer.o build/src/regex/symbols.o build/src/regex/build_dfa.o
 
 LIB = lib/liblexer.a
 
