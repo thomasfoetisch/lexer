@@ -1,5 +1,5 @@
 
-#include "alphabet.hpp"
+#include "symbols.hpp"
 
 
 namespace regex {

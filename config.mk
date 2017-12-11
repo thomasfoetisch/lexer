@@ -1,7 +1,7 @@
 CXX = clang++
 DEPS_BIN = g++
-CXXFLAGS = -O2 -std=c++11
-LDFLAGS = -O2
+CXXFLAGS = -O2 -std=c++11 -fPIC
+LDFLAGS = -O2 -fPIC
 AR = ar
 ARFLAGS = rc
 MKDIR = mkdir
@@ -24,19 +24,23 @@ SOURCES = test/file_source_test.cpp \
           test/token_buffer_test.cpp \
           test/minimal_lexer.cpp \
           test/token_test.cpp \
-          src/regex/alphabet.cpp \
+          src/regex/symbols.cpp \
           src/regex/build_dfa.cpp \
           src/regex/match.cpp \
 	  test/circuit_graph.cpp
 
 HEADERS = include/lexer/lexer.hpp \
+	  include/lexer/regex_lexer.hpp \
+	  include/lexer/regex_lexer_builder.hpp \
+	  include/lexer/source_coordinate_range.hpp \
 	  include/lexer/token_buffer.hpp \
 	  include/lexer/token.hpp \
-	  include/lexer/regex/alphabet.hpp \
+	  include/lexer/regex/symbols.hpp \
 	  include/lexer/regex/build_dfa.hpp \
 	  include/lexer/regex/dfa.hpp \
 	  include/lexer/regex/lexer.hpp \
 	  include/lexer/regex/match.hpp \
+	  include/lexer/regex/source.hpp \
 	  include/lexer/regex/parser.hpp \
 	  include/lexer/regex/ast/alt.hpp \
 	  include/lexer/regex/ast/ast.hpp \
@@ -59,16 +63,16 @@ BIN = bin/file_source_test \
       bin/circuit_graph
 
 
-bin/file_source_test: build/test/file_source_test.o build/src/regex/alphabet.o
-bin/lexer_test: build/test/lexer_test.o build/src/regex/alphabet.o build/src/regex/build_dfa.o
-bin/regex_lexer_test: build/test/regex_lexer_test.o build/src/regex/alphabet.o
-bin/regex_parser_test: build/test/regex_parser_test.o build/src/regex/alphabet.o
-bin/string_source_test: build/test/string_source_test.o build/src/regex/alphabet.o
-bin/token_buffer_test: build/test/token_buffer_test.o build/src/regex/alphabet.o
-bin/token_test: build/test/token_test.o build/src/regex/alphabet.o
-bin/circuit_graph: build/test/circuit_graph.o build/src/regex/alphabet.o build/src/regex/build_dfa.o
-bin/minimal_lexer: build/test/minimal_lexer.o build/src/regex/alphabet.o build/src/regex/build_dfa.o
+bin/file_source_test: build/test/file_source_test.o build/src/regex/symbols.o
+bin/lexer_test: build/test/lexer_test.o build/src/regex/symbols.o build/src/regex/build_dfa.o
+bin/regex_lexer_test: build/test/regex_lexer_test.o build/src/regex/symbols.o
+bin/regex_parser_test: build/test/regex_parser_test.o build/src/regex/symbols.o
+bin/string_source_test: build/test/string_source_test.o build/src/regex/symbols.o
+bin/token_buffer_test: build/test/token_buffer_test.o build/src/regex/symbols.o
+bin/token_test: build/test/token_test.o build/src/regex/symbols.o
+bin/circuit_graph: build/test/circuit_graph.o build/src/regex/symbols.o build/src/regex/build_dfa.o
+bin/minimal_lexer: build/test/minimal_lexer.o build/src/regex/symbols.o build/src/regex/build_dfa.o
 
 LIB = lib/liblexer.a
 
-lib/liblexer.a: build/src/regex/alphabet.o build/src/regex/build_dfa.o build/src/regex/match.o
+lib/liblexer.a: build/src/regex/symbols.o build/src/regex/build_dfa.o build/src/regex/match.o

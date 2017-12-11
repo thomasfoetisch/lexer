@@ -6,7 +6,7 @@
 #include <set>
 
 #include "../../token.hpp"
-#include "../alphabet.hpp"
+#include "../symbols.hpp"
 #include "../dfa.hpp"
 
 namespace regex {

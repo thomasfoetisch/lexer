@@ -4,7 +4,7 @@
 #include <string>
 #include "../token.hpp"
 #include "../token_buffer.hpp"
-#include "alphabet.hpp"
+#include "symbols.hpp"
 #include "ast/ast.hpp"
 
 namespace regex {
