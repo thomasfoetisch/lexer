@@ -26,7 +26,8 @@ class source {
   virtual token_type* build_token(symbol_type s) = 0;
   virtual token_type* build_token(symbol_type s, const std::string& v) = 0;
   virtual token_type* build_token(symbol_type s, std::size_t length) = 0;
-  virtual std::string render_current_coordinates() = 0;
+  virtual source_coordinate_range* get_current_coordinates() const = 0;
+  virtual std::string render_current_coordinates() const = 0;
 };
 
 
@@ -110,8 +111,12 @@ class string_source: public source<token_type_t> {
 
     return result;
   }
-
-  virtual std::string render_current_coordinates() {
+  
+  virtual source_coordinate_range* get_current_coordinates() const {
+    return new source_coordinate_range(start_line, start_column, 0);
+  }
+  
+  virtual std::string render_current_coordinates() const {
     return source_coordinate_range(start_line, start_column, 0).render();
   }
 
@@ -260,8 +265,12 @@ class file_source: public source<token_type_t> {
     
     return tmp;
   }
+  
+  virtual source_coordinate_range* get_current_coordinates() const {
+    return new file_source_coordinate_range(file_name, start_line, start_column, 0);
+  }
 
-  virtual std::string render_current_coordinates() {
+  virtual std::string render_current_coordinates() const {
     return file_source_coordinate_range(file_name, start_line, start_column, 0).render();
   }
   
@@ -365,7 +374,11 @@ class file_stack_source: public source<token_type_t> {
     return files.back()->build_token(s, v);
   }
   
-  virtual std::string render_current_coordinates() {
+  virtual source_coordinate_range* get_current_coordinates() const {
+    return files.back()->get_current_coordinates();
+  }
+  
+  virtual std::string render_current_coordinates() const {
     return files.back()->render_current_coordinates();
   }
 

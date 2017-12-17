@@ -15,6 +15,20 @@
 #include "token_buffer.hpp"
 
 
+class lex_error {
+public:
+  lex_error(source_coordinate_range* c, const std::string& msg)
+    : coordinates(c), msg(msg) {}
+
+  const source_coordinate_range* get_coordinates() const { return coordinates; }
+  const std::string& get_message() const { return msg; }
+  
+private:
+  source_coordinate_range* coordinates;
+  const std::string msg;
+};
+
+
 template<typename token_type>
 class regex_lexer {
  public:
@@ -54,9 +68,8 @@ class regex_lexer {
     while (not src.back()->eof() and not abort) {
       char symbol(src.back()->peek());
       if (symbol < 0)
-	throw std::string("regex_lexer::get(): "
-			  "non ascii character near "
-			  + src.back()->render_current_coordinates());
+	throw lex_error(src.back()->get_current_coordinates(),
+                        "non ascii character");
       
       std::size_t next_state(skipper_automaton.transitions[current_state][symbol]);
       if (next_state) {
@@ -95,6 +108,10 @@ class regex_lexer {
         abort = true;
       } else {
         char symbol(src.back()->peek());
+        if (symbol < 0)
+          throw lex_error(src.back()->get_current_coordinates(),
+                          "non ascii character");
+        
         const std::size_t next_state(lexer_automaton.transitions[current_state][symbol]);
         if (next_state == 0) {
           abort = true;
@@ -120,8 +137,27 @@ class regex_lexer {
     else if (n == 0 and src.back()->eof())
       return src.back()->build_token(end_of_input_symbol, "");
     else
-      throw std::string("regex_lexer::get(): "
-                        "input error near " + src.back()->render_current_coordinates());
+      throw lex_error(src.back()->get_current_coordinates(),
+                      "unrecognized token");
+  }
+
+  void recover() {
+    bool abort(false);
+    const std::size_t start_state(skipper_automaton.start_state);
+    
+    while (not src.back()->eof() and not abort) {
+      char symbol(src.back()->peek());
+      if (symbol < 0) {
+        src.back()->get();
+      } else {
+        std::size_t next_state(skipper_automaton.transitions[start_state][symbol]);
+        if (next_state == 0) {
+          src.back()->get();
+        } else {
+          abort = true;
+        }
+      }
+    }
   }
   
  private:
